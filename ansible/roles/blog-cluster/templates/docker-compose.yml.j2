@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: {{wordpress_db_pass}}
+    ports:
+      - 3306:3306
+    volumes:
+      - ./volumes/db:/var/lib/mysql
+
+  blogOne:
+    image: wordpress
+    environment:
+      WP_HOME: {{ blog_one_url }}
+      WP_SITEURL: {{ blog_one_url }}
+      WORDPRESS_DB_PASSWORD: {{ wordpress_db_pass }}
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_TABLE_PREFIX: "ba_"
+
+  westphaliaShruggedBlog:
+    image: wordpress
+    environment:
+      WP_HOME: {{ blog_two_url }}
+      WP_SITEURL: {{ blog_two_url }}
+      WORDPRESS_DB_PASSWORD: {{ wordpress_db_pass }}
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_TABLE_PREFIX: "bb_"
+
+  haproxy:
+    image: haproxy
+    ports:
+      - 80:80
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro

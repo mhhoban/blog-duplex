@@ -1,0 +1,25 @@
+defaults
+    mode http
+    option forwardfor
+    option http-server-close
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    log global
+    bind *:80
+
+    acl ba hdr_end(host) -i {{blog_one_url}}
+    acl bb hdr_end(host) -i {{blog_two_url}}
+
+    use_backend blog_one_backend if ba
+    use_backend blog_two_backend if bb
+
+    default_backend blog_one_backend
+
+backend blog_one_backend
+    server server_one blogOne:80
+
+backend blog_two_backend
+    server server_two blogTwo:80

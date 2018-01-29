@@ -1,0 +1,16 @@
+---
+- name: Blog Cluster | Create blog cluster service directory
+  file:
+    path: /var/docker-service/
+    state: directory
+
+- name: Blog Cluster | create docker-compose file
+  template: src=templates/docker-compose.yml.j2 dest=/var/docker-service/docker-compose.yml
+
+- name: Blog Cluster | create haproxy config file
+  template: src=templates/haproxy.cfg.j2 dest=/var/docker-service/haproxy.cfg
+
+- name: Blog Cluster | bring up Blog Cluster
+  docker_service:
+    project_src: /var/docker-service
+    state: present

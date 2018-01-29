@@ -1,0 +1,52 @@
+---
+
+- name: Docker Setup | Add Docker GPG Key
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    state: present
+
+- name: Docker Setup | Install apt-transport-https
+  apt: name=apt-transport-https state=present update_cache=yes
+
+- name: Docker Setup | Install ca-certificates
+  apt: name=ca-certificates state=present update_cache=yes
+
+- name: Docker Setup | Install curl
+  apt: name=curl state=present update_cache=yes
+
+- name: Docker Setup | Install software-properties-common
+  apt: name=software-properties-common state=present update_cache=yes
+
+- name: Docker Setup | Add Docker CE Repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian {{debian_version}} stable
+    state: present
+
+- name: Docker Install | Install Docker CE
+  apt: name=docker-ce state=present update_cache=yes
+
+- name: Docker Install | Install Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+
+- name: Docker Install | Add Executable Permission to Docker Compose
+  file:
+    path: /usr/local/bin/docker-compose
+    mode: 0755
+
+- name: Docker Service Setup | create directory for docker service
+  file:
+    path: /var/docker-service
+    state: directory
+
+- name: Docker Service Setup | copy pip requirements for docker_service_module
+  template:
+    src=templates/pip-requirements.txt.j2 dest=/var/docker-service/pip-requirements.txt
+
+- name: Docker Service Setup | install pip
+  apt: name=python-pip state=present update_cache=yes
+
+- name: Docker Service Setup | install pip requirements
+  pip:
+    requirements: /var/docker-service/pip-requirements.txt

@@ -1,0 +1,11 @@
+---
+blog_one_url: [YOUR_FIRST_BLOG_DOMAIN_NAME_HERE]
+blog_two_url: [YOUR_SECOND_BLOG_DOMAIN_NAME_HERE]
+
+ssh_port: 22
+key_loc: [PATH_TO_YOUR_PRIVATE_KEY]
+ssh_user: root
+
+debian_version: 'stretch'
+
+wordpress_db_pass: [YOUR_DB_ROOT_PASSWORD_OF_CHOICE]

@@ -1,0 +1,10 @@
+---
+- hosts: core
+  become: true
+  roles:
+    - docker
+
+- hosts: core
+  become: true
+  roles:
+    - blog-cluster
