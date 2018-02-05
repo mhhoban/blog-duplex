@@ -1,6 +1,6 @@
 resource "digitalocean_droplet" "blog_duplex" {
   image = "debian-9-x64"
-  name = "supercarrier"
+  name = "blog-duplex"
   region = "sfo2"
   size = "1gb"
   private_networking = true
